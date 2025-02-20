@@ -5,8 +5,18 @@
 
 package main
 
-import "fmt"
+import (
+	"log"
+	"net/http"
+)
 
 func main() {
-	fmt.Println("Hello remote world!")
+	fs := http.FileServer(http.Dir("./src"))
+	http.Handle("/", fs)
+
+	log.Print("Listening on :8080...")
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
